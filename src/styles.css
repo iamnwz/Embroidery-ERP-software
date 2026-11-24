@@ -174,6 +174,25 @@ table.sheet { width: 100%; border-collapse: collapse; font-size: 14px; }
 .box-link:hover { text-decoration: underline; }
 .section-title { font-size: 14px; font-weight: 600; color: var(--text-2); margin: 0 0 8px; }
 
+/* ===== Login & save status ===== */
+.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; background: var(--side); }
+.auth-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px 28px; box-shadow: 0 8px 30px rgba(20, 30, 25, 0.08); text-align: center; }
+.auth-card h1 { font-size: 21px; margin-bottom: 6px; }
+.auth-card > p { margin: 0 0 20px; font-size: 13.5px; }
+.auth-card code { background: #f1f3f2; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+.auth-mark { width: 44px; height: 44px; border-radius: 12px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; margin: 0 auto 14px; }
+.auth-error { background: #fdecea; color: #9b2219; border: 1px solid #f5c9c4; border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.auth-submit { height: 42px; width: 100%; font-size: 14.5px; margin-top: 4px; }
+.spinner { width: 28px; height: 28px; border: 3px solid var(--accent-soft); border-top-color: var(--accent); border-radius: 50%; margin: 8px auto 12px; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.save-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px 2px; }
+.save-row .link-btn { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-size: 12.5px; }
+.save-row .link-btn:hover { color: var(--text); }
+.save-status { font-size: 12px; white-space: nowrap; }
+.save-status.ok { color: #2f7a4f; }
+.save-status.busy { color: #9a6a08; }
+.save-status.err { color: var(--danger); font-weight: 600; }
+
 /* ===== Month-end export ===== */
 .month-pick { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 8px; border: 1px solid var(--grid); border-radius: 10px; background: #fafbfa; }
 .month-pick strong { font-size: 17px; min-width: 170px; text-align: center; }

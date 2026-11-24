@@ -56,7 +56,7 @@ export default function SettingsPage() {
         </Box>
         <Box title="Backup">
           <div style={{ padding: 16 }} className="stack">
-            <p className="muted" style={{ margin: 0 }}>All records are saved on this computer, in this browser. Download a backup regularly. The same file can be used to move the records to another computer.</p>
+            <p className="muted" style={{ margin: 0 }}>All records are saved online in your database, so you can log in from any computer and see the same data. A backup file is an extra copy you can keep on your own computer.</p>
             <div className="row">
               <button className="btn" onClick={exportBackup}><Download size={16} /> Download backup</button>
               <button className="btn" onClick={() => fileRef.current?.click()}><Upload size={16} /> Restore from backup</button>
@@ -68,8 +68,8 @@ export default function SettingsPage() {
           <div style={{ padding: 16 }} className="stack">
             <p className="muted" style={{ margin: 0 }}>The software currently has sample records. When you are ready to enter real records, clear everything.</p>
             <div className="row">
-              <button className="btn" onClick={async () => { if (await confirmAction('Replace all records with fresh sample data?', 'Reset')) { db.resetDemo(); setName(useStore.getState().settings.factoryName); notify('Sample data restored'); } }}><RotateCcw size={16} /> Reset sample data</button>
-              <button className="btn btn-danger" onClick={async () => { if (await confirmAction('Delete ALL records (orders, stock, employees, everything)? Download a backup first if you may need them.', 'Delete everything')) { db.clearAll(); notify('All records cleared'); } }}><Eraser size={16} /> Clear all data</button>
+              <button className="btn" onClick={async () => { if (await confirmAction('Replace all records in the database with fresh sample data? Your current records will be deleted.', 'Reset')) { db.resetDemo(); setName(useStore.getState().settings.factoryName); notify('Sample data restored'); } }}><RotateCcw size={16} /> Reset sample data</button>
+              <button className="btn btn-danger" onClick={async () => { if (await confirmAction('Delete ALL records from the database (orders, stock, employees, everything)? This cannot be undone. Download a backup first if you may need them.', 'Delete everything')) { db.clearAll(); notify('All records cleared'); } }}><Eraser size={16} /> Clear all data</button>
             </div>
           </div>
         </Box>

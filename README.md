@@ -17,6 +17,16 @@ npm run dev
 
 Then open http://localhost:5173.
 
+## Database (Supabase)
+
+All records are stored in Supabase (PostgreSQL), not in the browser.
+
+- **Environment variables:** copy `.env.example` to `.env` and fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. These are public values. Never put a secret or `service_role` key in the app. `.env` is git-ignored.
+- **Schema:** the tables and security rules are in `supabase/migrations/`. Apply them with `supabase db push` or the SQL editor.
+- **One owner account:** the first person to open the app creates the owner login. After that, the database refuses any other sign-up. Every table uses Row Level Security, so only the logged-in owner can read or write. The publishable key on its own can do nothing except check whether an owner exists.
+- **Locked out of the owner account?** Delete the user in Supabase → Authentication → Users. The app will then show "Create owner account" again. The records stay.
+- **How saving works:** after login, `src/store/cloud.ts` loads every table into memory. It then saves each change automatically: only the changed records are sent, in the right order, with automatic retry. The sidebar shows "All changes saved", "Saving…" or "Not saved — retrying".
+
 ## What it calculates automatically
 
 | What | How |
@@ -90,7 +100,7 @@ The code is in `src/lib/monthExport.ts`. The Excel library is loaded only when s
 
 ## Code
 
-- React, TypeScript and Vite. Records are saved in the browser (`localStorage`). There is no server.
+- React, TypeScript and Vite, with Supabase (PostgreSQL + Auth) as the database.
 - `src/types.ts`: record types
 - `src/config.ts`: lists you can edit (statuses, garments, inventory categories, designations, expense categories)
 - `src/store/store.ts`: data storage. This is the only file to change if the records move to a database later.

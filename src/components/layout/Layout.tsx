@@ -1,9 +1,33 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Home, ClipboardList, Factory, Boxes, ShoppingCart, Users, UserCog, Receipt, FileText, Settings, Menu, FileSpreadsheet } from 'lucide-react';
+import { Home, ClipboardList, Factory, Boxes, ShoppingCart, Users, UserCog, Receipt, FileText, Settings, Menu, FileSpreadsheet, LogOut } from 'lucide-react';
 import { useStore } from '../../store/store';
 import { GlobalSearch } from '../GlobalSearch';
 import { MonthExportModal } from '../MonthExport';
+import { supabase } from '../../lib/supabase';
+import { flush, hasUnsaved, useSaveStatus } from '../../store/cloud';
+import { confirmAction } from '../ui';
+
+/** Small "All saved / Saving… / Not saved" line in the sidebar */
+function SaveStatus() {
+  const { state, pending, message } = useSaveStatus();
+  if (state === 'error')
+    return (
+      <span className="save-status err" title={message}>
+        ● Not saved — retrying{pending ? ` (${pending})` : ''}
+      </span>
+    );
+  if (state === 'saving') return <span className="save-status busy">● Saving…</span>;
+  return <span className="save-status ok">● All changes saved</span>;
+}
+
+async function logOut() {
+  if (hasUnsaved()) {
+    const ok = await flush();
+    if (!ok && !(await confirmAction('Some changes are not saved yet (no internet?). Log out anyway and lose them?', 'Log out'))) return;
+  }
+  await supabase?.auth.signOut();
+}
 
 export const NAV = [
   { to: '/', label: 'Dashboard', icon: Home },
@@ -54,6 +78,12 @@ export function Layout() {
             <Settings size={16} strokeWidth={1.8} />
             Settings & backup
           </NavLink>
+          <div className="save-row">
+            <SaveStatus />
+            <button className="link-btn small" onClick={logOut} title="Log out">
+              <LogOut size={14} /> Log out
+            </button>
+          </div>
         </div>
       </aside>
       <div className="scrim" onClick={() => setOpen(false)} />
